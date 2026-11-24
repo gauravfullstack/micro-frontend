@@ -1,0 +1,15 @@
+{
+  "name": "microfrontend-ecommerce",
+  "private": true,
+  "workspaces": [
+    "host",
+    "products",
+    "cart"
+  ],
+  "scripts": {
+    "dev:host": "npm run dev --workspace host",
+    "dev:products": "npm run dev --workspace products",
+    "dev:cart": "npm run dev --workspace cart",
+    "build": "npm run build --workspace host && npm run build --workspace products && npm run build --workspace cart"
+  }
+}
