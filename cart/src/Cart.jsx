@@ -1,7 +1,7 @@
 import "./Cart.css";
 
 // The host supplies the latest array on every render, so no shared store is needed.
-export default function Cart({ items = [] }) {
+export default function Cart({ items = [], onRemoveItem }) {
   const total = items.reduce((sum, item) => sum + item.price, 0);
 
   if (items.length === 0) {
@@ -21,6 +21,16 @@ export default function Cart({ items = [] }) {
             <img src={item.image} alt="" />
             <span className="cart-item-name">{item.name}</span>
             <span className="cart-item-price">${item.price.toFixed(2)}</span>
+            {onRemoveItem && (
+              <button
+                className="cart-item-remove"
+                type="button"
+                onClick={() => onRemoveItem(index)}
+                aria-label={`Remove ${item.name} from cart`}
+              >
+                Remove
+              </button>
+            )}
           </li>
         ))}
       </ul>

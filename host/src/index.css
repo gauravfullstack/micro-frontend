@@ -22,6 +22,7 @@ button { font: inherit; }
 .brand-mark { width: 30px; height: 30px; display: grid; place-items: center; border-radius: 50%; color: #fff; background: #526a4d; font-family: Georgia, serif; font-size: 21px; font-style: italic; }
 .site-header nav { display: flex; gap: 36px; color: #6f746a; font-size: 13px; }
 .site-header nav a:hover, .cart-link:hover { color: #526a4d; }
+.site-header nav a.active-nav-link { color: #526a4d; font-weight: 700; }
 .cart-link { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; }
 .cart-count { min-width: 25px; height: 25px; display: grid; place-items: center; border-radius: 50%; background: #e8ebe1; color: #526a4d; }
 .hero { position: relative; min-height: 440px; display: flex; flex-direction: column; justify-content: center; overflow: hidden; border-bottom: 1px solid #e4e6df; }
@@ -56,7 +57,7 @@ h2 { font-size: 38px; }
 }
 
 @media (max-width: 460px) {
-  .site-header nav { display: none; }
+  .site-header nav { gap: 10px; font-size: 11px; }
   .hero-orbit { right: -115px; }
   .site-footer { gap: 15px; }
 }

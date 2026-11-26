@@ -8,6 +8,8 @@
 .cart-item img { width: 55px; height: 46px; border-radius: 3px; object-fit: cover; background: #e8e9e3; }
 .cart-item-name { flex: 1; font-size: 12px; font-weight: 600; }
 .cart-item-price { color: #526a4d; font-size: 12px; font-weight: 600; }
+.cart-item-remove { padding: 6px 8px; border: 1px solid #e8e9e3; border-radius: 3px; background: #fff; color: #73786f; cursor: pointer; font-size: 10px; }
+.cart-item-remove:hover { border-color: #b87867; color: #8d4936; }
 .cart-total { display: flex; justify-content: space-between; padding-top: 19px; font-size: 13px; }
 .cart-total small { margin-left: 5px; color: #92978d; font-size: 10px; font-weight: 400; }
 .cart-total strong { color: #526a4d; font-size: 16px; }

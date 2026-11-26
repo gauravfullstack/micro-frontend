@@ -12,6 +12,12 @@ export default function App() {
     ]);
   }
 
+  function removeSampleItem(itemIndex) {
+    setItems((currentItems) =>
+      currentItems.filter((_, index) => index !== itemIndex),
+    );
+  }
+
   return (
     <main className="standalone-cart">
       <p className="standalone-label">CART REMOTE · PORT 5002</p>
@@ -19,7 +25,7 @@ export default function App() {
       <p className="standalone-intro">
         The host passes its cart items to this component as props.
       </p>
-      <Cart items={items} />
+      <Cart items={items} onRemoveItem={removeSampleItem} />
       <button className="sample-button" type="button" onClick={addSampleItem}>
         Add a sample item
       </button>

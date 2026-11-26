@@ -19,6 +19,7 @@ A beginner-friendly React + Vite example with three separately served applicatio
                  └─────────────────────┘   └──────────────────────┘
                        onAddToCart(product) → host state
                        host cartItems ───────────────→ Cart props
+                       onRemoveItem(index) ←───────── Cart callback
 ```
 
 - A **host** (also called a container) is the app users visit. It decides which remote features to load and provides the common shell.
@@ -26,17 +27,20 @@ A beginner-friendly React + Vite example with three separately served applicatio
 - **Module Federation** lets separately built JavaScript applications share modules at runtime. The host resolves `products/ProductList` and `cart/Cart` to the remotes' `remoteEntry.js` files.
 - The remotes expose components in `vite.config.js`; the host declares their URLs and imports them lazily. This is runtime loading, not source-code copying or an iframe.
 
-## 2. Data flow and dependency sharing
+## 2. Navigation and data flow
+
+The host provides three simple hash routes: `#/home`, `#/products`, and `#/cart`. The navigation links change the browser hash, and the host listens for the browser's `hashchange` event to render the selected page. This is intentionally a small teaching example, not a replacement for a routing library in a larger application. The remotes own feature content; the host decides where that content appears.
 
 1. The host renders `<ProductList onAddToCart={addToCart} />`.
 2. The Products remote calls `onAddToCart(product)` when a button is clicked.
 3. That callback updates the host's `cartItems` React state.
 4. React renders the host again and passes the new array to `<Cart items={cartItems} />`.
-5. The Cart remote calculates and displays the total. No refresh, Redux, or cross-app event bus is needed.
+5. The Cart remote displays the items and total. When Remove is clicked, it calls `onRemoveItem(index)`.
+6. That callback updates the host's state, which passes the smaller list back to the Cart remote.
 
 The host and remotes declare React and React DOM as **singletons**. This tells Module Federation to use one compatible copy on the page rather than loading a second React instance. Duplicate React copies can break Hooks and context. `react/` and `react-dom/` cover subpath imports such as the JSX runtime.
 
-The components exchange plain props and callbacks, so the remotes do not import host state or depend on one another. Each remote also has a tiny standalone preview shell for local development.
+This is two-way communication through a simple contract: callbacks send user actions up to the host, and props send the resulting state down to a remote. The host remains the source of truth; neither remote imports the other's code or owns the shared cart. No refresh, Redux, or event bus is needed. Each remote also has a tiny standalone preview shell for local development.
 
 ## 3. Project structure
 
@@ -141,11 +145,12 @@ The example's dev defaults use localhost; deployments must configure their real 
 ## 7. Test the complete flow
 
 1. Run all three development servers and open the host on port 5000.
-2. Confirm products load and the cart starts empty.
-3. Add two different products. The header count should increment, and the Cart remote should list each item and show their summed price without a page refresh.
-4. Open either remote's own port to confirm its standalone preview renders.
-5. Stop one remote and reload the host. Its section should show an unavailable message while the other remote can still load.
-6. Run `npm run build` to confirm all three production bundles build.
+2. Use Home, Products, and Cart navigation; try the browser Back button. The URL hash should change without a full-page reload.
+3. Add two products. The header count should update, and the Cart remote should show the items and total.
+4. Remove one item in the Cart remote. The host-owned count and cart contents should update.
+5. Open either remote's own port to confirm its standalone preview renders.
+6. Stop one remote and reload the host. Its page should show an unavailable message while navigation and the other remote remain available.
+7. Run `npm run build` to confirm all three production bundles build.
 
 ## 8. Interview preparation
 
